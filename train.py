@@ -59,7 +59,7 @@ model.train(
     epochs=20,
     imgsz=640,
     batch=16,
-    device=0,
+    device="cuda",
     project="runs",
     name="gsconv_phase1",
 )
