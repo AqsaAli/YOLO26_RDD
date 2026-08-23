@@ -31,10 +31,10 @@ tasks_path = os.path.join(ul_path, "nn", "tasks.py")
 with open(tasks_path, "r") as f:
     content = f.read()
 if "GSConv" not in content:
-    # Add to import block (4-space indent)
+    # Inject import directly before parse_model
     content = content.replace(
-        "    GhostConv,\n",
-        "    GhostConv,\n    GSConv,\n",
+        "def parse_model(",
+        "from ultralytics.nn.modules.custom import GSConv\ndef parse_model(",
         1
     )
     # Add to base_modules frozenset (8-space indent)
