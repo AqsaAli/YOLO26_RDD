@@ -8,7 +8,8 @@ result = subprocess.run(
     [sys.executable, "-c", "import ultralytics; print(ultralytics.__file__)"],
     capture_output=True, text=True
 )
-ul_path = os.path.dirname(result.stdout.strip())
+#ul_path = os.path.dirname(result.stdout.strip())
+ul_path = os.path.dirname(result.stdout.strip().split('\n')[-1])
 modules_path = os.path.join(ul_path, "nn", "modules")
 
 # ── 3. Copy custom.py ──────────────────────────────────────
