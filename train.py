@@ -31,9 +31,17 @@ tasks_path = os.path.join(ul_path, "nn", "tasks.py")
 with open(tasks_path, "r") as f:
     content = f.read()
 if "GSConv" not in content:
+    # Add to import block (4-space indent)
+    content = content.replace(
+        "    GhostConv,\n",
+        "    GhostConv,\n    GSConv,\n",
+        1
+    )
+    # Add to base_modules frozenset (8-space indent)
     content = content.replace(
         "        GhostConv,\n",
-        "        GhostConv,\n        GSConv,\n"
+        "        GhostConv,\n        GSConv,\n",
+        1
     )
     with open(tasks_path, "w") as f:
         f.write(content)
