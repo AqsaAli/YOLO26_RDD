@@ -33,9 +33,11 @@ tasks_path = os.path.join(ul_path, "nn", "tasks.py")
 with open(tasks_path, "r") as f:
     content = f.read()
 if "from ultralytics.nn.modules.custom import GSConv" not in content:
-    # Prepend import at very top of file
-    content = "from ultralytics.nn.modules.custom import GSConv\n" + content
-    # Add to base_modules frozenset
+    content = content.replace(
+        "from __future__ import annotations\n",
+        "from __future__ import annotations\nfrom ultralytics.nn.modules.custom import GSConv\n",
+        1
+    )
     content = content.replace(
         "        GhostConv,\n",
         "        GhostConv,\n        GSConv,\n",
@@ -44,7 +46,6 @@ if "from ultralytics.nn.modules.custom import GSConv" not in content:
     with open(tasks_path, "w") as f:
         f.write(content)
 
-# Delete bytecode cache so patched .py is used
 for pyc in glob.glob(os.path.join(ul_path, "nn", "__pycache__", "tasks*.pyc")):
     os.remove(pyc)
 print("✓ tasks.py patched")
