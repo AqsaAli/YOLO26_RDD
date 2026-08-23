@@ -27,17 +27,15 @@ if "from .custom import GSConv" not in content:
 print("✓ __init__.py patched")
 
 # ── 5. Patch tasks.py ──────────────────────────────────────
+import glob
+
 tasks_path = os.path.join(ul_path, "nn", "tasks.py")
 with open(tasks_path, "r") as f:
     content = f.read()
-if "GSConv" not in content:
-    # Inject import directly before parse_model
-    content = content.replace(
-        "def parse_model(",
-        "from ultralytics.nn.modules.custom import GSConv\ndef parse_model(",
-        1
-    )
-    # Add to base_modules frozenset (8-space indent)
+if "from ultralytics.nn.modules.custom import GSConv" not in content:
+    # Prepend import at very top of file
+    content = "from ultralytics.nn.modules.custom import GSConv\n" + content
+    # Add to base_modules frozenset
     content = content.replace(
         "        GhostConv,\n",
         "        GhostConv,\n        GSConv,\n",
@@ -45,6 +43,10 @@ if "GSConv" not in content:
     )
     with open(tasks_path, "w") as f:
         f.write(content)
+
+# Delete bytecode cache so patched .py is used
+for pyc in glob.glob(os.path.join(ul_path, "nn", "__pycache__", "tasks*.pyc")):
+    os.remove(pyc)
 print("✓ tasks.py patched")
 
 # ── 6. Train ───────────────────────────────────────────────
