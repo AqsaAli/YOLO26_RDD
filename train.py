@@ -1,7 +1,7 @@
 import subprocess, sys, shutil, os
 
 # ── 1. Install ultralytics ──────────────────────────────────
-subprocess.run([sys.executable, "-m", "pip", "install", "ultralytics==8.4.127", "-q"], check=True)
+subprocess.run([sys.executable, "-m", "pip", "install", "ultralytics==8.4.127", "--force-reinstall", "-q"], check=True)
 
 # ── 2. Find ultralytics path ────────────────────────────────
 result = subprocess.run(
