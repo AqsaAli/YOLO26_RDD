@@ -46,19 +46,3 @@ if "from ultralytics.nn.modules.custom import GSConv" not in content:
 for pyc in glob.glob(os.path.join(ul_path, "nn", "__pycache__", "tasks*.pyc")):
     os.remove(pyc)
 print("✓ tasks.py patched")
-
-# ── 6. Train ───────────────────────────────────────────────
-from ultralytics import YOLO
-
-model = YOLO("yolo26_dbg.yaml")
-model.train(
-    data="/kaggle/working/RDD_4class/data.yaml",
-    epochs=20,
-    imgsz=640,
-    batch=16,
-    device="cuda",
-    project="runs",
-    name="gsconv_phase1",
-    save=True,
-    save_period=5,
-)
